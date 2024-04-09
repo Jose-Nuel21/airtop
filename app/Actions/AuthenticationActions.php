@@ -129,7 +129,7 @@ class AuthenticationActions
 
         try {
             PasswordReset::updateOrCreate(
-                ['email' =>  request('email')],
+                ['email' =>  $request->email],
                 ['token' => $tokenHash]
             );
 
