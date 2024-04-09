@@ -150,10 +150,8 @@ class AuthenticationActions
     {
         try {
             $token = PasswordReset::where('email', $request->email)
-                ->where('token', $request->token)
                 ->first();
-            if ($token)
-            {
+            if (Hash::check($request->token, $token->token)) {
                 $user = User::where('email', $token->email)->first();
                 $user->password = Hash::make($request->password);
                 $user->save();
