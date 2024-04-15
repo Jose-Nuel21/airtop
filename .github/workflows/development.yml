@@ -1,0 +1,27 @@
+name: Deploy Site on push
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get the latest code
+      uses: actions/checkout@v2.3.2
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.LARAVEL_SITE_SERVER}}
+        username: ${{ secrets.LARAVEL_SITE_USER}}
+        password: ${{ secrets.LARAVEL_SITE_PASS}}
+        server-dir: /authservice.jupitapp.co/
+    - name: Install Dependencies, Run migration and optimize
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        command: cd authservice.jupitapp.co && composer install && php artisan migrate && php artisan optimize:clear
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: ${{ secrets.SSH_PORT }}
