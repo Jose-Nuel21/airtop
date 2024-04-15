@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('passcode')->nullable();
             $table->string('referral')->nullable();
+            $table->string('profile_image')->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

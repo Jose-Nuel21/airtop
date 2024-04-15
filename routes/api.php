@@ -3,9 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 Route::post('login', [\App\Http\Controllers\API\AuthenticationController::class, 'login']);
 Route::post('passcode_login', [\App\Http\Controllers\API\AuthenticationController::class, 'loginWithPasscode']);
@@ -15,3 +12,8 @@ Route::post('send_password_reset_token', [\App\Http\Controllers\API\Authenticati
 Route::post('submit_password_reset_token', [\App\Http\Controllers\API\AuthenticationController::class, 'submitPasswordResetToken']);
 Route::post('verify_email', [\App\Http\Controllers\API\AuthenticationController::class, 'verifyRegistrationEmail']);
 Route::post('resend_email_otp', [\App\Http\Controllers\API\AuthenticationController::class, 'resendEmailVerification']);
+
+Route::middleware('auth:sanctum')->group(function (){
+    Route::post('update_profile', [\App\Http\Controllers\API\UserController::class, 'updateProfile']);
+    Route::post('upload_photo', [\App\Http\Controllers\API\UserController::class, 'uploadPhoto']);
+});
